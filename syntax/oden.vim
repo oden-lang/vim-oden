@@ -13,7 +13,7 @@ if !exists("main_syntax")
   let main_syntax = 'oden'
 endif
 
-syntax keyword odenKeyword    let in if then else any
+syntax keyword odenKeyword    let in if then else any fn
 syntax keyword odenBasicType  int string float bool
 syntax keyword odenBoolean    true false
 

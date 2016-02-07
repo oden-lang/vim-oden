@@ -14,24 +14,38 @@ if !exists("main_syntax")
 endif
 
 syntax keyword odenKeyword package import let in if then else any
+syntax keyword odenBoolean true false
 
-syntax region odenComment         start="/\*" end="\*/"
-syntax region odenMultiComment    start="/\*" end="\*/"
 syntax region odenString          start=+"+ end=+"+
-syntax match  odenOperator        "+\|-\|*\|/\|==\|!=\|<\|>\|<=\|>=\|->\|::"
-syntax match  odenEquals          "=" contained
-syntax match  odenBinding         "\w\+ =" contains=odenEquals
+syntax match  odenOperator        '+'
+syntax match  odenOperator        '-'
+syntax match  odenOperator        '*'
+syntax match  odenOperator        '/'
+syntax match  odenOperator        '=='
+syntax match  odenOperator        '!='
+syntax match  odenOperator        '<'
+syntax match  odenOperator        '>'
+syntax match  odenOperator        '<='
+syntax match  odenOperator        '>='
+syntax match  odenOperator        '->'
+syntax match  odenOperator        '::'
+syntax match  odenEquals          "="       contained
+syntax match  odenDefinition      "\w\+ =" contains=odenEquals
+syntax match  odenDefinition      "\w\+ ->" contains=odenOperator
+syntax match  odenBinding         "\w\+ ="  contains=odenEquals
 syntax match  odenBraces          "[{}\[\]]"
+syntax match  odenComment         "\v//.*$"
+syntax region odenMultiComment    start="/\*" end="\*/"
 
 hi link odenBinding         Identifier
 hi link odenOperator        Operator
 hi link odenEquals          Operator
 hi link odenString          String
-hi link odenTextBlock       Special
-hi link odenKey             Constant
+hi link odenKeyword         Keyword
+hi link odenBoolean         Boolean
+hi link odenDefinition      Identifier
 hi link odenComment         Comment
 hi link odenMultiComment    Comment
-
 
 let b:current_syntax = "oden"
 if main_syntax == 'oden'

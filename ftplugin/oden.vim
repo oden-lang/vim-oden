@@ -1,4 +1,4 @@
-set makeprg=oden\ lint\ %
+set makeprg=oden\ -M\ lint\ %
 
 " TODO: Fix this.
 " set errorformat=

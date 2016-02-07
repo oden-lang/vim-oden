@@ -12,7 +12,7 @@ endfunction
 
 function! SyntaxCheckers_oden_lint_GetLocList() dict
     let makeprg = self.makeprgBuild({
-                \ 'args': 'lint' })
+                \ 'args': '-M lint' })
 
     " TODO: Fix this
     " let errorformat = '%A"%f" (line %l\, column %c):,%C%m'

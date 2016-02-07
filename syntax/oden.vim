@@ -13,10 +13,12 @@ if !exists("main_syntax")
   let main_syntax = 'oden'
 endif
 
-syntax keyword odenKeyword package import let in if then else any
-syntax keyword odenBoolean true false
+syntax keyword odenKeyword    package import let in if then else any
+syntax keyword odenBasicType  int string float bool
+syntax keyword odenBoolean    true false
 
 syntax region odenString          start=+"+ end=+"+
+syntax match  odenOperator        '++'
 syntax match  odenOperator        '+'
 syntax match  odenOperator        '-'
 syntax match  odenOperator        '*'
@@ -28,10 +30,18 @@ syntax match  odenOperator        '>'
 syntax match  odenOperator        '<='
 syntax match  odenOperator        '>='
 syntax match  odenOperator        '->'
-syntax match  odenOperator        '::'
+syntax match  odenNumber          "\v[+-]?\d+"
+syntax match  odenFloat           "\v[+-]?\d\.\d+"
+syntax match  odenFloat           "\v\.\d+"
+syntax match  odenTypeOperator    '::'
+syntax match  odenTypeVariable    '\v#[a-zA-Z]+'
+syntax match  odenType            "\v.*$"   contained contains=odenBasicType,odenTypeVariable
 syntax match  odenEquals          "="       contained
-syntax match  odenDefinition      "\w\+ =" contains=odenEquals
-syntax match  odenDefinition      "\w\+ ->" contains=odenOperator
+syntax match  odenDefinitionName  "\v^\w+"
+syntax match  odenDefinition      "\v^\w+ =" contains=odenDefinitionName,odenEquals
+syntax match  odenDefinition      "\v^\w+\s+(\w+\s+)*->" contains=odenDefinitionName,odenOperator
+syntax match  odenSignature       "\v^\w+\s+::" transparent contains=odenDefinitionName,odenTypeOperator nextgroup=odenType
+syntax match  odenPackageMember   "\v[a-zA-Z/.]+\.\w+"
 syntax match  odenBinding         "\w\+ ="  contains=odenEquals
 syntax match  odenBraces          "[{}\[\]]"
 syntax match  odenComment         "\v//.*$"
@@ -39,11 +49,19 @@ syntax region odenMultiComment    start="/\*" end="\*/"
 
 hi link odenBinding         Identifier
 hi link odenOperator        Operator
+hi link odenTypeOperator    Operator
+hi link odenTypeVariable    Label
+hi link odenType            Normal
+hi link odenBasicType       Special
 hi link odenEquals          Operator
 hi link odenString          String
+hi link odenNumber          Number
+hi link odenFloat           Float
 hi link odenKeyword         Keyword
 hi link odenBoolean         Boolean
-hi link odenDefinition      Identifier
+hi link odenDefinitionName  Identifier
+hi link odenPackageMember   Include
+hi link odenSignature       SpecialComment
 hi link odenComment         Comment
 hi link odenMultiComment    Comment
 

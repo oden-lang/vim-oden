@@ -1,8 +1,3 @@
 set makeprg=oden\ -M\ lint\ %
 
-" TODO: Fix this.
-" set errorformat=
-"       \%A\\"%f\\"\ \\(line\ %l\\,\ column\ %c\\):,
-"       \%C%m
-set errorformat=%m
-
+set errorformat=%A%f:%l:%c:\ %m,%C%m

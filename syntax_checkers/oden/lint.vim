@@ -14,9 +14,10 @@ function! SyntaxCheckers_oden_lint_GetLocList() dict
     let makeprg = self.makeprgBuild({
                 \ 'args': '-M lint' })
 
-    " TODO: Fix this
-    " let errorformat = '%A"%f" (line %l\, column %c):,%C%m'
-    let errorformat = '%m'
+    let errorformat =
+        \ '%E%f:%l:%c: error: %m,' .
+        \ '%W%f:%l:%c: warning: %m,' .
+        \ '%A%f: %m,%C%m'
 
     return SyntasticMake({ 'makeprg': makeprg, 'errorformat': errorformat })
 endfunction

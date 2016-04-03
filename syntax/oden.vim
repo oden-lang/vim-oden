@@ -13,8 +13,9 @@ if !exists("main_syntax")
   let main_syntax = 'oden'
 endif
 
-syntax keyword odenKeyword    let in if then else any type forall
+syntax keyword odenKeyword    let in if then else type forall
 syntax keyword odenBasicType  int string float bool ()
+syntax keyword odenBuiltin    print println len
 syntax keyword odenBoolean    true false
 
 syntax match  odenEscapeC         display contained +\\[abfnrtv\\'"]+
@@ -31,19 +32,23 @@ syntax match  odenOperator        '>'
 syntax match  odenOperator        '<='
 syntax match  odenOperator        '>='
 syntax match  odenOperator        '='
-syntax match  odenTypeOperator    ':'
-syntax match  odenTypeOperator    '->'
-syntax match  odenTypeOperator    '|'
-syntax match  odenTypeOperator    '\.'
-syntax match  odenType            ".[^\( ]$"   contained contains=odenBasicType,odenTypeOperator,odenEquals
-syntax match  odenIdentifier  "\v\w[^ \(]*"
+syntax match  odenOperator        ':'
+syntax match  odenTypeOperator    '|' contained
+syntax match  odenTypeOperator    '->' contained
+syntax match  odenTypeOperator    '=' contained
+syntax match  odenTypeOperator    ':' contained
+syntax match  odenTypeOperator    '\.' contained
+syntax match  odenTypeOperator    'forall' contained
+syntax match  odenTypeSymbol      "\v[a-zA-Z]\w*" contained
+syntax match  odenType            "\v.*" contained transparent contains=odenBasicType,odenTypeSymbol,odenTypeOperator
+syntax match  odenIdentifier      "\v\w[^ \(\)]*"
 syntax match  odenNumber          "\v[+-]?\d+"
 syntax match  odenFloat           "\v[+-]?\d\.\d+"
 syntax match  odenFloat           "\v\.\d+"
 syntax match  odenDefinitionName  "\v\w+"  contained
 syntax match  odenSignatureName   "\v\w[^ \(]*"  contained
-syntax match  odenDefinition      "\v^\w[^ \(]* =" contains=odenDefinitionName,odenEquals,odenOperator
-syntax match  odenSignature       "\v^\w[^ \(]*\s*:{1}" contains=odenDefinitionName nextgroup=odenBasicType
+syntax match  odenDefinition      "\v^[a-zA-Z][^ \(]* =" contains=odenDefinitionName,odenEquals,odenOperator
+syntax match  odenSignature       "\v^[a-zA-Z][^ \(]*\s*:" contains=odenDefinitionName nextgroup=odenType
 syntax match  odenBraces          "[{}\[\]]"
 syntax match  odenComment         "\v//.*$"
 syntax region odenMultiComment    start="/\*" end="\*/"
@@ -53,9 +58,10 @@ syntax match  odenImport          '^import\s*' nextgroup=odenPackagePath
 syntax region odenString          start=+"+ skip=+\\\\\|\\"+ end=+"+ contains=odenEscapeC
 
 hi link odenOperator        Operator
-hi link odenTypeOperator    Operator
-hi link odenTypeVariable    Normal
-hi link odenType            Normal
+hi link odenType            Type
+hi link odenTypeOperator    Type
+hi link odenTypeVariable    Type
+hi link odenTypeSymbol      Type
 hi link odenBasicType       Special
 hi link odenEquals          Operator
 hi link odenString          String
@@ -63,6 +69,7 @@ hi link odenEscapeC         Special
 hi link odenNumber          Number
 hi link odenFloat           Float
 hi link odenKeyword         Keyword
+hi link odenBuiltin         Special
 hi link odenPackageDecl     Keyword
 hi link odenImport          Keyword
 hi link odenBoolean         Boolean

@@ -13,10 +13,10 @@ if !exists("main_syntax")
   let main_syntax = 'oden'
 endif
 
-syntax keyword odenKeyword    let in if then else type forall
-syntax keyword odenBasicType  int string float bool ()
+syntax keyword odenKeyword    package import let in if then else type forall protocol impl
 syntax keyword odenBuiltin    print println len
 syntax keyword odenBoolean    true false
+syntax keyword odenBasicType  int string float bool ()
 
 syntax match  odenEscapeC         display contained +\\[abfnrtv\\'"]+
 
@@ -39,8 +39,8 @@ syntax match  odenTypeOperator    '=' contained
 syntax match  odenTypeOperator    ':' contained
 syntax match  odenTypeOperator    '\.' contained
 syntax match  odenTypeOperator    'forall' contained
-syntax match  odenTypeSymbol      "\v[a-zA-Z]\w*" contained
-syntax match  odenType            "\v.*" contained transparent contains=odenBasicType,odenTypeSymbol,odenTypeOperator
+syntax match  odenTypeSymbol      "\v\w[^ \(\)]*" contained
+syntax match  odenType            "\v.*" transparent contained contains=odenBasicType,odenTypeOperator
 syntax match  odenIdentifier      "\v\w[^ \(\)]*"
 syntax match  odenNumber          "\v[+-]?\d+"
 syntax match  odenFloat           "\v[+-]?\d\.\d+"
@@ -58,7 +58,6 @@ syntax match  odenImport          '^import\s*' nextgroup=odenPackagePath
 syntax region odenString          start=+"+ skip=+\\\\\|\\"+ end=+"+ contains=odenEscapeC
 
 hi link odenOperator        Operator
-hi link odenType            Type
 hi link odenTypeOperator    Type
 hi link odenTypeVariable    Type
 hi link odenTypeSymbol      Type
